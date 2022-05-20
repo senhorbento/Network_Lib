@@ -11,7 +11,7 @@ typedef struct{
     int mensagemEnviada;
 } TMensagem;
 
-int velocidadeSerial[] = {
+long int VelocidadeSerial[] = {
     4800, 
     9600, 
     19200, 
