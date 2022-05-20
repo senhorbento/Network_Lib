@@ -74,6 +74,7 @@ TMensagem Network::LerMensagem(int serial){
             delay(_DELAY_);
         break;
     }
+    return mensagemRecebida;
 }
 
 void Network::IniciarComunicacao(int qtd){
