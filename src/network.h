@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#define _DELAY_ 100
+
 typedef struct{
     int remetente;
     int destino;
@@ -23,15 +25,54 @@ class Network{
         TMensagem mensagem;
     public:
         boolean ChecarEndereco(int end);
+        TMensagem LerMensagem(int serial);
         void IniciarComunicacao();
-        void SetEndereco(int v);
-        void EscreverMensagem(int remetente, int destino, int mensagem);
         void EnviarMensagem();
+        void SetEndereco(int v);
         void ReceberMensagem(TMensagem msg);
+        void EscreverMensagem(int remetente, int destino, int mensagem);
 };
 
 boolean Network::ChecarEndereco(int end){
     return end == endereco ? 1 : 0;
+}
+
+TMensagem Network::LerMensagem(int serial){
+    TMensagem mensagemRecebida;
+    switch (serial){
+        case 0:
+            mensagemRecebida.remetente = Serial.read();
+            delay(_DELAY_);
+            mensagemRecebida.destino = Serial.read();
+            delay(_DELAY_);
+            mensagemRecebida.mensagemEnviada = Serial.read();
+            delay(_DELAY_);
+        break;
+        case 1:
+            mensagemRecebida.remetente = Serial1.read();
+            delay(_DELAY_);
+            mensagemRecebida.destino = Serial1.read();
+            delay(_DELAY_);
+            mensagemRecebida.mensagemEnviada = Serial1.read();
+            delay(_DELAY_);
+        break;
+        case 2:
+            mensagemRecebida.remetente = Serial2.read();
+            delay(_DELAY_);
+            mensagemRecebida.destino = Serial2.read();
+            delay(_DELAY_);
+            mensagemRecebida.mensagemEnviada = Serial2.read();
+            delay(_DELAY_);
+        break;
+        case 3:
+            mensagemRecebida.remetente = Serial3.read();
+            delay(_DELAY_);
+            mensagemRecebida.destino = Serial3.read();
+            delay(_DELAY_);
+            mensagemRecebida.mensagemEnviada = Serial3.read();
+            delay(_DELAY_);
+        break;
+    }
 }
 
 void Network::IniciarComunicacao(){
@@ -39,8 +80,35 @@ void Network::IniciarComunicacao(){
     Serial3.begin(VelocidadeSerial[3]);
 }
 
+void Network::EnviarMensagem(){
+    if(mensagem.remetente > endereco){
+        Serial3.print(mensagem.remetente);
+        delay(_DELAY_);
+        Serial3.print(mensagem.destino);
+        delay(_DELAY_);
+        Serial3.print(mensagem.mensagemEnviada);
+        delay(_DELAY_);
+    }
+    else{
+        Serial.print(mensagem.remetente);
+        delay(_DELAY_);
+        Serial.print(mensagem.destino);
+        delay(_DELAY_);
+        Serial.print(mensagem.mensagemEnviada);
+        delay(_DELAY_);
+    }
+}
+
 void Network::SetEndereco(int v){
     endereco = v;
+}
+void Network::ReceberMensagem(TMensagem msg){
+    if(ChecarEndereco(msg.remetente))
+        mensagemRecebida = msg.mensagemEnviada;
+    else{
+        EscreverMensagem(msg.remetente, msg.destino, msg.mensagemEnviada);
+        EnviarMensagem();
+    }        
 }
 
 void Network::EscreverMensagem(int remetente, int destino, int msg){
@@ -48,26 +116,4 @@ void Network::EscreverMensagem(int remetente, int destino, int msg){
     mensagem.destino = destino;
     mensagem.mensagemEnviada = msg;
 }
-
-void Network::EnviarMensagem(){
-    if(mensagem.remetente > endereco){
-        Serial3.print(mensagem.remetente);
-        Serial3.print(mensagem.destino);
-        Serial3.print(mensagem.mensagemEnviada);
-    }
-    else{
-        Serial.print(mensagem.remetente);
-        Serial.print(mensagem.destino);
-        Serial.print(mensagem.mensagemEnviada);
-    }
-}
-
-void Network::ReceberMensagem(TMensagem msg){
-    EscreverMensagem(msg.remetente, msg.destino, msg.mensagemEnviada);
-    if(ChecarEndereco(mensagem.remetente))
-        mensagemRecebida = mensagem.mensagemEnviada;
-    else
-        EnviarMensagem();
-}
-
 #endif
