@@ -54,35 +54,35 @@ TMensagem Network::LerMensagem(int serial){
     TMensagem mensagemRecebida;
     switch (serial){
         case 0:
-            mensagemRecebida.remetente = Serial.read();
+            mensagemRecebida.remetente = Serial.parseInt();
             delay(_DELAY_);
-            mensagemRecebida.destino = Serial.read();
+            mensagemRecebida.destino = Serial.parseInt();
             delay(_DELAY_);
-            mensagemRecebida.mensagemEnviada = Serial.read();
+            mensagemRecebida.mensagemEnviada = Serial.parseInt();
             delay(_DELAY_);
         break;
         case 1:
-            mensagemRecebida.remetente = Serial1.read();
+            mensagemRecebida.remetente = Serial1.parseInt();
             delay(_DELAY_);
-            mensagemRecebida.destino = Serial1.read();
+            mensagemRecebida.destino = Serial1.parseInt();
             delay(_DELAY_);
-            mensagemRecebida.mensagemEnviada = Serial1.read();
+            mensagemRecebida.mensagemEnviada = Serial1.parseInt();
             delay(_DELAY_);
         break;
         case 2:
-            mensagemRecebida.remetente = Serial2.read();
+            mensagemRecebida.remetente = Serial2.parseInt()
             delay(_DELAY_);
-            mensagemRecebida.destino = Serial2.read();
+            mensagemRecebida.destino = Serial2.parseInt();
             delay(_DELAY_);
-            mensagemRecebida.mensagemEnviada = Serial2.read();
+            mensagemRecebida.mensagemEnviada = Serial2.parseInt();
             delay(_DELAY_);
         break;
         case 3:
-            mensagemRecebida.remetente = Serial3.read();
+            mensagemRecebida.remetente = Serial3.parseInt();
             delay(_DELAY_);
-            mensagemRecebida.destino = Serial3.read();
+            mensagemRecebida.destino = Serial3.parseInt();
             delay(_DELAY_);
-            mensagemRecebida.mensagemEnviada = Serial3.read();
+            mensagemRecebida.mensagemEnviada = Serial3.parseInt();
             delay(_DELAY_);
         break;
     }
@@ -116,19 +116,19 @@ void Network::SetEndereco(int v){
 
 void Network::EnviarMensagem(){
     if(mensagem.remetente > endereco){
-        Serial3.print(mensagem.remetente);
+        Serial3.write(mensagem.remetente);
         delay(_DELAY_);
-        Serial3.print(mensagem.destino);
+        Serial3.write(mensagem.destino);
         delay(_DELAY_);
-        Serial3.print(mensagem.mensagemEnviada);
+        Serial3.write(mensagem.mensagemEnviada);
         delay(_DELAY_);
     }
     else{
-        Serial.print(mensagem.remetente);
+        Serial.write(mensagem.remetente);
         delay(_DELAY_);
-        Serial.print(mensagem.destino);
+        Serial.write(mensagem.destino);
         delay(_DELAY_);
-        Serial.print(mensagem.mensagemEnviada);
+        Serial.write(mensagem.mensagemEnviada);
         delay(_DELAY_);
     }
 }
