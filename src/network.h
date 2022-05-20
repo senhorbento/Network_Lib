@@ -25,17 +25,29 @@ class Network{
         TMensagem mensagem;
     public:
         boolean ChecarEndereco(int end);
+        boolean ReceberMensagem(TMensagem msg);
         TMensagem LerMensagem(int serial);
         void IniciarComunicacao(int qtd);
         void IniciarComunicacao();
         void SetEndereco(int v);
         void EnviarMensagem();
-        void ReceberMensagem(TMensagem msg);
         void EscreverMensagem(int remetente, int destino, int mensagem);
 };
 
 boolean Network::ChecarEndereco(int end){
     return end == endereco ? 1 : 0;
+}
+
+bool Network::ReceberMensagem(TMensagem msg){
+    if(ChecarEndereco(msg.destino)){
+        mensagemRecebida = msg.mensagemEnviada;
+        return 1;
+    }   
+    else{
+        EscreverMensagem(msg.remetente, msg.destino, msg.mensagemEnviada);
+        EnviarMensagem();
+        return 0;
+    }        
 }
 
 TMensagem Network::LerMensagem(int serial){
@@ -119,15 +131,6 @@ void Network::EnviarMensagem(){
         Serial.print(mensagem.mensagemEnviada);
         delay(_DELAY_);
     }
-}
-
-void Network::ReceberMensagem(TMensagem msg){
-    if(ChecarEndereco(msg.remetente))
-        mensagemRecebida = msg.mensagemEnviada;
-    else{
-        EscreverMensagem(msg.remetente, msg.destino, msg.mensagemEnviada);
-        EnviarMensagem();
-    }        
 }
 
 void Network::EscreverMensagem(int remetente, int destino, int msg){
