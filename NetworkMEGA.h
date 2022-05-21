@@ -1,7 +1,7 @@
 #ifndef _NETWORK_MEGA_H_
 #define _NETWORK_MEGA_H_
 
-#include "Network.h"
+#include "include\Network.h"
 
 class NetworkMEGA : public Network{
     public:
