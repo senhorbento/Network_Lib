@@ -1,4 +1,33 @@
-#include "Network.h"
+#ifndef _NETWORK_LIB_H_
+#define _NETWORK_LIB_H_
+
+#include <Arduino.h>
+
+typedef struct{
+    int remetente;
+    int destino;
+    int mensagemEnviada;
+} TMensagem;
+
+class Network{
+    protected:
+        int enderecoLocal;
+        int mensagemRecebida;
+        TMensagem mensagem;
+        long int VelocidadeSerial[4] = {4800, 9600, 19200, 57600};
+    public:
+        bool ChecarEndereco(int end);
+        char ConverterChar(int n);
+
+        int GetMensagem();
+        void SetEnderecoLocal(int v);
+        void EscreverMensagem(int remetente, int destino, int msg);
+        bool ReceberMensagem();
+        
+        virtual void IniciarComunicacao();
+        virtual void LerMensagem(int serial);
+        virtual void EnviarMensagem();        
+};
 
 bool Network :: ChecarEndereco(int end){
     return end == enderecoLocal ? 1 : 0;
@@ -26,6 +55,8 @@ char Network :: ConverterChar(int n){
             return '8';
         case 9:
             return '9';
+        default:
+            return 'a';
     }
 }
 
@@ -53,3 +84,5 @@ bool Network :: ReceberMensagem(){
         return 0;
     }        
 }      
+
+#endif
