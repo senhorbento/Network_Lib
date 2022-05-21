@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#define _DELAY_ 100
+#define _DELAY_ 1000
 
 typedef struct{
     int remetente;
@@ -54,24 +54,10 @@ TMensagem Network::LerMensagem(int serial){
     TMensagem mensagemRecebida;
     switch (serial){
         case 0:
+            Serial.setTimeout(100);
             mensagemRecebida.remetente = Serial.parseInt();
             mensagemRecebida.destino = Serial.parseInt();
             mensagemRecebida.mensagemEnviada = Serial.parseInt();
-        break;
-        case 1:
-            mensagemRecebida.remetente = Serial1.parseInt();
-            mensagemRecebida.destino = Serial1.parseInt();
-            mensagemRecebida.mensagemEnviada = Serial1.parseInt();
-        break;
-        case 2:
-            mensagemRecebida.remetente = Serial2.parseInt();
-            mensagemRecebida.destino = Serial2.parseInt();
-            mensagemRecebida.mensagemEnviada = Serial2.parseInt();
-        break;
-        case 3:
-            mensagemRecebida.remetente = Serial3.parseInt();
-            mensagemRecebida.destino = Serial3.parseInt();
-            mensagemRecebida.mensagemEnviada = Serial3.parseInt();
         break;
     }
     return mensagemRecebida;
@@ -82,20 +68,11 @@ void Network::IniciarComunicacao(int qtd){
         case 0:
             Serial.begin(VelocidadeSerial[0]);
         break;
-        case 1:
-            Serial1.begin(VelocidadeSerial[1]);
-        break;
-        case 2:
-            Serial2.begin(VelocidadeSerial[2]);
-        break;
-        case 3:
-            Serial3.begin(VelocidadeSerial[3]);
-        break;
     }
 }
+
 void Network::IniciarComunicacao(){
     Serial.begin(VelocidadeSerial[0]);
-    Serial3.begin(VelocidadeSerial[3]);
 }
 
 void Network::SetEndereco(int v){
@@ -103,22 +80,12 @@ void Network::SetEndereco(int v){
 }
 
 void Network::EnviarMensagem(){
-    if(mensagem.remetente > endereco){
-        Serial3.write(mensagem.remetente);
-        delay(_DELAY_);
-        Serial3.write(mensagem.destino);
-        delay(_DELAY_);
-        Serial3.write(mensagem.mensagemEnviada);
-        delay(_DELAY_);
-    }
-    else{
-        Serial.write(mensagem.remetente);
-        delay(_DELAY_);
-        Serial.write(mensagem.destino);
-        delay(_DELAY_);
-        Serial.write(mensagem.mensagemEnviada);
-        delay(_DELAY_);
-    }
+    Serial.write(mensagem.remetente);
+    delay(_DELAY_);
+    Serial.write(mensagem.destino);
+    delay(_DELAY_);
+    Serial.write(mensagem.mensagemEnviada);
+    delay(_DELAY_);
 }
 
 void Network::EscreverMensagem(int remetente, int destino, int msg){
@@ -126,4 +93,5 @@ void Network::EscreverMensagem(int remetente, int destino, int msg){
     mensagem.destino = destino;
     mensagem.mensagemEnviada = msg;
 }
+
 #endif
