@@ -17,120 +17,68 @@ long int VelocidadeSerial[] = {
 };
 
 class Network{
-    private:
+    protected:
         int enderecoLocal;
         int mensagemRecebida;
         TMensagem mensagem;
     public:
-        boolean ChecarEndereco(int end);
-
-        int GetMensagem();
-        void SetEnderecoLocal(int v);
-
-        void IniciarComunicacao(int qtd);
-        void IniciarComunicacao();
-
-        void EscreverMensagem(int remetente, int destino, int msg);
-        void LerMensagem(int serial);   //1
-        boolean ReceberMensagem();      //2
-        void EnviarMensagem();          //3
+        bool ChecarEndereco(int end){
+            return end == enderecoLocal ? 1 : 0;
+        }
         
+        char ConverterChar(int n){
+            switch (n){
+                case 0:
+                    return '0';
+                case 1:
+                    return '1';
+                case 2:
+                    return '2';
+                case 3:
+                    return '3';
+                case 4:
+                    return '4';
+                case 5:
+                    return '5';
+                case 6:
+                    return '6';
+                case 7:
+                    return '7';
+                case 8:
+                    return '8';
+                case 9:
+                    return '9';
+            }
+        }
+
+        int GetMensagem(){
+            return mensagemRecebida;
+        }
+
+        void SetEnderecoLocal(int v){
+            enderecoLocal = v;
+        }
+
+        void EscreverMensagem(int remetente, int destino, int msg){
+            mensagem.remetente = remetente;
+            mensagem.destino = destino;
+            mensagem.mensagemEnviada = msg;
+        }
+        
+        bool ReceberMensagem(){
+            if(ChecarEndereco(mensagem.destino)){
+                mensagemRecebida = mensagem.mensagemEnviada;
+                return 1;
+            }   
+            else{
+                EnviarMensagem();
+                return 0;
+            }        
+        }
+        
+        virtual void IniciarComunicacao();
+        virtual void LerMensagem(int serial);
+        virtual void EnviarMensagem();        
 };
 
-//Metodo auxiliar
-boolean Network::ChecarEndereco(int end){
-    return end == enderecoLocal ? 1 : 0;
-}
-
-//Gets and Sets
-int Network::GetMensagem(){
-    return mensagemRecebida;
-}
-void Network::SetEnderecoLocal(int v){
-    enderecoLocal = v;
-}
-
-//Iniciar comunicação
-void Network::IniciarComunicacao(int qtd){
-    switch (qtd){
-        case 0:
-            Serial.begin(VelocidadeSerial[0]);
-        break;
-        case 1:
-            Serial1.begin(VelocidadeSerial[1]);
-        break;
-        case 2:
-            Serial2.begin(VelocidadeSerial[2]);
-        break;
-        case 3:
-            Serial3.begin(VelocidadeSerial[3]);
-        break;
-    }
-}
-void Network::IniciarComunicacao(){
-    Serial.begin(VelocidadeSerial[0]);
-    Serial3.begin(VelocidadeSerial[3]);
-}
-
-//Tratamento de mensagens
-void Network::EscreverMensagem(int remetente, int destino, int msg){
-    mensagem.remetente = remetente;
-    mensagem.destino = destino;
-    mensagem.mensagemEnviada = msg;
-}
-
-void Network::LerMensagem(int serial){
-    switch (serial){
-        case 0:
-            mensagem.remetente = Serial.parseInt();
-            mensagem.destino = Serial.parseInt();
-            mensagem.mensagemEnviada = Serial.parseInt();
-        break;
-        case 1:
-            mensagem.remetente = Serial1.parseInt();
-            mensagem.destino = Serial1.parseInt();
-            mensagem.mensagemEnviada = Serial1.parseInt();
-        break;
-        case 2:
-            mensagem.remetente = Serial2.parseInt();
-            mensagem.destino = Serial2.parseInt();
-            mensagem.mensagemEnviada = Serial2.parseInt();
-        break;
-        case 3:
-            mensagem.remetente = Serial3.parseInt();
-            mensagem.destino = Serial3.parseInt();
-            mensagem.mensagemEnviada = Serial3.parseInt();
-        break;
-    }
-}
-
-boolean Network::ReceberMensagem(){
-    if(ChecarEndereco(mensagem.destino)){
-        mensagemRecebida = mensagem.mensagemEnviada;
-        return 1;
-    }   
-    else{
-        EnviarMensagem();
-        return 0;
-    }        
-}
-
-void Network::EnviarMensagem(){
-    if(mensagem.destino > enderecoLocal){
-        Serial3.print(mensagem.remetente);
-        Serial3.print("*");
-        Serial3.print(mensagem.destino);
-        Serial3.print("*");
-        Serial3.print(mensagem.mensagemEnviada);
-        Serial3.print("*");
-    }
-    else{
-        Serial.print(mensagem.remetente);
-        Serial.print("*");
-        Serial.print(mensagem.destino);
-        Serial.print("*");
-        Serial.print(mensagem.mensagemEnviada);
-        Serial.print("*");
-    }
-}
 #endif

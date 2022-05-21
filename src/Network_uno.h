@@ -1,93 +1,30 @@
-#ifndef _NETWORK_LIB_H_
-#define _NETWORK_LIB_H_
+#ifndef _NETWORK_UNO_H_
+#define _NETWORK_UNO_H_
 
-#include <Arduino.h>
+#include "Network.h"
 
-typedef struct{
-    int remetente;
-    int destino;
-    int mensagemEnviada;
-} TMensagem;
-
-long int VelocidadeSerial[] = {
-    4800, 
-    9600, 
-    19200, 
-    57600
-};
-
-class Network{
-    private:
-        int enderecoLocal;
-        int mensagemRecebida;
-        TMensagem mensagem;
+class NetworkUNO : public Network{
     public:
-        boolean ChecarEndereco(int end);
-
-        int GetMensagem();
-        void SetEnderecoLocal(int v);
-
-        void IniciarComunicacao();
-
-        void EscreverMensagem(int remetente, int destino, int msg);
-        void LerMensagem(int serial);   //1
-        boolean ReceberMensagem();      //2
-        void EnviarMensagem();          //3
-        
+        void IniciarComunicacao(){
+            Serial.begin(VelocidadeSerial[0]);
+        }
+        void LerMensagem(int serial){
+            switch (serial){
+                case 0:
+                    mensagem.remetente = Serial.parseInt();
+                    mensagem.destino = Serial.parseInt();
+                    mensagem.mensagemEnviada = Serial.parseInt();
+                break;
+            }
+        }
+        void EnviarMensagem(){
+            char aux [4];
+            aux[0] = ConverterChar(mensagem.remetente);
+            aux[1] = ConverterChar(mensagem.destino);
+            aux[2] = ConverterChar(mensagem.mensagemEnviada);
+            aux[3] = '*';
+            Serial.print(aux);
+        }
 };
 
-//Metodo auxiliar
-boolean Network::ChecarEndereco(int end){
-    return end == enderecoLocal ? 1 : 0;
-}
-
-//Gets and Sets
-int Network::GetMensagem(){
-    return mensagemRecebida;
-}
-void Network::SetEnderecoLocal(int v){
-    enderecoLocal = v;
-}
-
-//Iniciar comunicação
-void Network::IniciarComunicacao(){
-    Serial.begin(VelocidadeSerial[0]);
-}
-
-//Tratamento de mensagens
-void Network::EscreverMensagem(int remetente, int destino, int msg){
-    mensagem.remetente = remetente;
-    mensagem.destino = destino;
-    mensagem.mensagemEnviada = msg;
-}
-
-void Network::LerMensagem(int serial){
-    switch (serial){
-        case 0:
-            mensagem.remetente = Serial.parseInt();
-            mensagem.destino = Serial.parseInt();
-            mensagem.mensagemEnviada = Serial.parseInt();
-        break;
-    }
-}
-
-boolean Network::ReceberMensagem(){
-    if(ChecarEndereco(mensagem.destino)){
-        mensagemRecebida = mensagem.mensagemEnviada;
-        return 1;
-    }   
-    else{
-        EnviarMensagem();
-        return 0;
-    }        
-}
-
-void Network::EnviarMensagem(){
-    Serial.print(mensagem.remetente);
-    Serial.print("*");
-    Serial.print(mensagem.destino);
-    Serial.print("*");
-    Serial.print(mensagem.mensagemEnviada);
-    Serial.print("*");
-}
 #endif
