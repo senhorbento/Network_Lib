@@ -46,7 +46,7 @@ boolean Network::ChecarEndereco(int end){
 int Network::GetMensagem(){
     return mensagemRecebida;
 }
-void Network::SetEndereco(int v){
+void Network::SetEnderecoLocal(int v){
     enderecoLocal = v;
 }
 
