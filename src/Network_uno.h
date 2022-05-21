@@ -83,11 +83,11 @@ boolean Network::ReceberMensagem(){
 }
 
 void Network::EnviarMensagem(){
-    Serial.write(mensagem.remetente);
-    Serial.write("*");
-    Serial.write(mensagem.destino);
-    Serial.write("*");
-    Serial.write(mensagem.mensagemEnviada);
-    Serial.write("*");
+    Serial.print(mensagem.remetente);
+    Serial.print("*");
+    Serial.print(mensagem.destino);
+    Serial.print("*");
+    Serial.print(mensagem.mensagemEnviada);
+    Serial.print("*");
 }
 #endif

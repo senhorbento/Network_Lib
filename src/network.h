@@ -117,20 +117,20 @@ boolean Network::ReceberMensagem(){
 
 void Network::EnviarMensagem(){
     if(mensagem.destino > enderecoLocal){
-        Serial3.write(mensagem.remetente);
-        Serial3.write("*");
-        Serial3.write(mensagem.destino);
-        Serial3.write("*");
-        Serial3.write(mensagem.mensagemEnviada);
-        Serial3.write("*");
+        Serial3.print(mensagem.remetente);
+        Serial3.print("*");
+        Serial3.print(mensagem.destino);
+        Serial3.print("*");
+        Serial3.print(mensagem.mensagemEnviada);
+        Serial3.print("*");
     }
     else{
-        Serial.write(mensagem.remetente);
-        Serial.write("*");
-        Serial.write(mensagem.destino);
-        Serial.write("*");
-        Serial.write(mensagem.mensagemEnviada);
-        Serial.write("*");
+        Serial.print(mensagem.remetente);
+        Serial.print("*");
+        Serial.print(mensagem.destino);
+        Serial.print("*");
+        Serial.print(mensagem.mensagemEnviada);
+        Serial.print("*");
     }
 }
 #endif
