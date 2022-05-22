@@ -7,6 +7,7 @@ typedef struct{
     int remetente;
     int destino;
     int mensagemEnviada;
+    int serial;
 } TMensagem;
 
 class Network{
@@ -21,7 +22,7 @@ class Network{
 
         int GetMensagem();
         void SetEnderecoLocal(int v);
-        void EscreverMensagem(int remetente, int destino, int msg);
+        void EscreverMensagem(int remetente, int destino, int msg, int serial);
         bool ReceberMensagem();
         
         virtual void IniciarComunicacao();
@@ -68,10 +69,11 @@ void Network :: SetEnderecoLocal(int v){
     enderecoLocal = v;
 }
 
-void Network :: EscreverMensagem(int remetente, int destino, int msg){
+void Network :: EscreverMensagem(int remetente, int destino, int msg, int serial){
     mensagem.remetente = remetente;
     mensagem.destino = destino;
     mensagem.mensagemEnviada = msg;
+    mensagem.serial = serial;
 }
 
 bool Network :: ReceberMensagem(){

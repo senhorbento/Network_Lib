@@ -15,13 +15,7 @@ void NetworkUNO :: IniciarComunicacao(){
 }
 
 void NetworkUNO :: LerMensagem(int serial){
-    switch (serial){
-        case 0:
-            mensagem.remetente = Serial.parseInt();
-            mensagem.destino = Serial.parseInt();
-            mensagem.mensagemEnviada = Serial.parseInt();
-        break;
-    }
+    //NotWorking
 }
 
 void NetworkUNO :: EnviarMensagem(){
@@ -30,7 +24,7 @@ void NetworkUNO :: EnviarMensagem(){
     aux[1] = ConverterChar(mensagem.destino);
     aux[2] = ConverterChar(mensagem.mensagemEnviada);
     aux[3] = '*';
-    Serial.print(aux);
+    Serial.write(aux);
 }
 
 #endif
