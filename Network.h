@@ -1,7 +1,9 @@
 #ifndef _NETWORK_LIB_H_
 #define _NETWORK_LIB_H_
 
-#include <Arduino.h>
+//#include <Arduino.h>
+
+#define _MAX_MENSAGEM_ 4
 
 typedef struct{
     int remetente;
@@ -25,6 +27,8 @@ class Network{
         void EscreverMensagem(int remetente, int destino, int msg, int serial);
         bool ReceberMensagem();
         
+        void (*Restart)() = 0;
+
         virtual void IniciarComunicacao();
         virtual void LerMensagem(int serial);
         virtual void EnviarMensagem();        

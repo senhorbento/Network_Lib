@@ -19,7 +19,7 @@ void NetworkUNO :: LerMensagem(int serial){
 }
 
 void NetworkUNO :: EnviarMensagem(){
-    char aux [4];
+    char aux[_MAX_MENSAGEM_];
     aux[0] = ConverterChar(mensagem.remetente);
     aux[1] = ConverterChar(mensagem.destino);
     aux[2] = ConverterChar(mensagem.mensagemEnviada);
