@@ -3,8 +3,6 @@
 
 #include "Network.h"
 
-
-
 class NetworkMEGA : public Network{
     public:
         void IniciarComunicacao();
@@ -14,8 +12,8 @@ class NetworkMEGA : public Network{
 };
 
 void NetworkMEGA :: IniciarComunicacao(){
-    Serial.begin(VelocidadeSerial[0]);
-    Serial3.begin(VelocidadeSerial[3]);
+    Serial.begin(_VELOCIDADE_SERIAL_);
+    Serial3.begin(_VELOCIDADE_SERIAL_);
 }
 
 void NetworkMEGA :: LerMensagem(int serial){

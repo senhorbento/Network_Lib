@@ -4,6 +4,7 @@
 //#include <Arduino.h>
 
 #define _MAX_MENSAGEM_ 4
+#define _VELOCIDADE_SERIAL_ 57600
 
 typedef struct{
     int remetente;
@@ -17,7 +18,6 @@ class Network{
         int enderecoLocal;
         int mensagemRecebida;
         TMensagem mensagem;
-        long int VelocidadeSerial[4] = {4800, 9600, 19200, 57600};
     public:
         bool ChecarEndereco(int end);
         char ConverterChar(int n);

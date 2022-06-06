@@ -11,7 +11,7 @@ class NetworkUNO : public Network{
 };
 
 void NetworkUNO :: IniciarComunicacao(){
-    Serial.begin(VelocidadeSerial[0]);
+    Serial.begin(_VELOCIDADE_SERIAL_);
 }
 
 void NetworkUNO :: LerMensagem(int serial){
